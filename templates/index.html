@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+        <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <!--<script src="/socket.io/socket.io.js"></script>-->
+        <script>
+            $(document).ready( function () {
+                window.socket = io.connect('http://raspberrypi.local:8000/color');
+            });
+        </script>
+    </head>
+
+    <body>
+        <div class="colorBox">
+            <input type='text' id="flat"/>
+        </div>
+	<br />
+	<button type="button" id="shift-btn">Shift</button>
+	<br />
+	<button type="button" id="breathe-btn">Breathe</button>
+    </body>
+</html>
+
+<script>
+    $("#flat").spectrum({
+        chooseText: "Save",
+        cancelText: "",
+        showPalette: true,
+        showSelectionPalette: true,
+        palette: [],
+        flat: true,
+        showInput: true,
+        maxPaletteSize: 15,
+        move: function(color) {
+                socket.emit('rgb', { r : Math.floor(color._r), g : Math.floor(color._g), b : Math.floor(color._b) });
+                $("body").css("background-color", color.toHexString());
+        },
+    });
+
+	$("#shift-btn").click( function () {
+		socket.emit('shift', {});
+	});
+
+	$("#breathe-btn").click( function () {
+		socket.emit('breathe', {});
+	});
+</script>
+
+<style>
+.flat {
+    background: transparent;
+    margin: 0px auto;
+    width: 960px;
+}
+
+.colorBox {
+    width: 100%;
+}
+</style>
