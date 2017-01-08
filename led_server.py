@@ -66,7 +66,7 @@ def rgb(sid, data):
 def pulse(sid, data):
 	REFRESH = False
 	delay = .1
-	amplitude = LED_BRIGHTNESS / 2
+	amplitude = 200
 	resolution = 500
 
 	mid1 = LED_COUNT / 2
@@ -81,25 +81,38 @@ def pulse(sid, data):
 			# Render
 			for i in range(LED_COUNT):
 				if (i >= low and i <= high):
-					strip.setPixelColorRGB(i, 0,200,0)
+					strip.setPixelColorRGB(i, 0,amplitude,0)
 				else:
 					strip.setPixelColorRGB(i, 0,0,0)
 			strip.show()
-			time.sleep(delay)
+			time.sleep(delay/2)
 
 			low  = low - 1
 			high = high + 1
+
+			# Smooth transition
+			strip.setPixelColorRGB(low, 0,amplitude/2,0)
+			strip.setPixelColorRGB(high, 0,amplitude/2,0)
+			strip.show()
+
+			time.sleep(delay/2)
 
 		# Inward
 		for i in range(LED_COUNT/2):
 			# Render
 			for i in range(LED_COUNT):
 				if (i >= low and i <= high):
-					strip.setPixelColorRGB(i, 0,200,0)
+					strip.setPixelColorRGB(i, 0,amplitude,0)
 				else:
 					strip.setPixelColorRGB(i, 0,0,0)
 			strip.show()
-			time.sleep(delay)
+			time.sleep(delay/2)
+
+			strip.setPixelColorRGB(low, 0,amplitude/2,0)
+			strip.setPixelColorRGB(high, 0,amplitude/2,0)
+			strip.show()
+
+			time.sleep(delay/2)
 
 			low  = low + 1
 			high = high - 1
@@ -165,7 +178,7 @@ def shift(sid, data):
 		for i in range(255,-1,-1):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(LED_COUNT :
+			for led_num in range(LED_COUNT ):
 				strip.setPixelColorRGB(led_num, i,0,255)
 			strip.show()
 		# Blue to teal
