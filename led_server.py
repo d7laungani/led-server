@@ -41,7 +41,7 @@ def rainbowCycle(strip, wait_ms=20, iterations=5):
 def on_rgb(*args):
 	print(args)
 
-	for i in range(60):
+	for i in range(LED_COUNT):
 		strip.setPixelColorRGB(i, args[0]['g'],args[0]['r'],args[0]['b'])
 	strip.show()
 
@@ -58,7 +58,7 @@ def rgb(sid, data):
 	REFRESH = True
 	# print REFRESH
 
-	for i in range(60):
+	for i in range(LED_COUNT ):
 		strip.setPixelColorRGB(i, data['g'],data['r'],data['b'])
 	strip.show()
 
@@ -158,42 +158,42 @@ def shift(sid, data):
 		for i in range(0,256):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(60):
+			for led_num in range(LED_COUNT ):
 				strip.setPixelColorRGB(led_num, 255,0,i)
 			strip.show()
 		# Pink to blue
 		for i in range(255,-1,-1):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(60):
+			for led_num in range(LED_COUNT :
 				strip.setPixelColorRGB(led_num, i,0,255)
 			strip.show()
 		# Blue to teal
 		for i in range(0,256):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(60):
+			for led_num in range(LED_COUNT ):
 				strip.setPixelColorRGB(led_num, 0,i,255)
 			strip.show()
 		# Teal to green
 		for i in range(256,0,-1):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(60):
+			for led_num in range(LED_COUNT ):
 				strip.setPixelColorRGB(led_num, 0,255,i)
 			strip.show()
 		# Green to yellow
 		for i in range(0,256):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(60):
+			for led_num in range(LED_COUNT ):
 				strip.setPixelColorRGB(led_num, i,255,0)
 			strip.show()
 		# Yellow to red
 		for i in range(256,0,-1):
 			if (REFRESH): return
 			time.sleep(delay)
-			for led_num in range(60):
+			for led_num in range(LED_COUNT ):
 				strip.setPixelColorRGB(led_num, 255,i,0)
 			strip.show()
 
