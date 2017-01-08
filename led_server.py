@@ -14,7 +14,7 @@ from socketIO_client import SocketIO, LoggingNamespace
 
 
 # LED strip configuration:
-LED_COUNT      = 180      # Number of LED pixels.
+LED_COUNT      = 60      # Number of LED pixels.
 LED_PIN        = 18      # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 5       # DMA channel to use for generating signal (try 5)
@@ -61,6 +61,67 @@ def rgb(sid, data):
 	for i in range(60):
 		strip.setPixelColorRGB(i, data['g'],data['r'],data['b'])
 	strip.show()
+
+@sio.on('pulse', namespace='/color')
+def pulse(sid, data):
+	REFRESH = False
+	delay = .1
+	amplitude = LED_BRIGHTNESS / 2
+	resolution = 500
+
+	mid1 = LED_COUNT / 2
+	mid2 = LED_COUNT / 2 + 1
+
+	low = mid1
+	high = mid2
+
+	while(True):
+		# Outward
+		for i in range(LED_COUNT/2):
+			# Render
+			for i in range(LED_COUNT):
+				if (i >= low and i <= high):
+					strip.setPixelColorRGB(i, 0,200,0)
+				else:
+					strip.setPixelColorRGB(i, 0,0,0)
+			strip.show()
+			time.sleep(delay)
+
+			low  = low - 1
+			high = high + 1
+
+		# Inward
+		for i in range(LED_COUNT/2):
+			# Render
+			for i in range(LED_COUNT):
+				if (i >= low and i <= high):
+					strip.setPixelColorRGB(i, 0,200,0)
+				else:
+					strip.setPixelColorRGB(i, 0,0,0)
+			strip.show()
+			time.sleep(delay)
+
+			low  = low + 1
+			high = high - 1
+
+	'''
+	while (True):
+		for i in range(resolution):
+			if (REFRESH): return # Exit condition
+			# print REFRESH
+
+			delt = amplitude * math.cos(2 * math.pi * i / resolution)
+			brights = LED_BRIGHTNESS + (int)( delt - amplitude )
+
+			# strip.setBrightness( LED_BRIGHTNESS + (int)( delt - amplitude ) )
+			if brights < 8:
+				brights = 8
+
+			strip.setBrightness( brights )
+			strip.show()
+
+			time.sleep(delay)
+	'''
 
 # Convolve breathing animation
 @sio.on('breathe', namespace='/color')

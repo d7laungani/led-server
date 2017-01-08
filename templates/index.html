@@ -22,6 +22,8 @@
 	<br />
 	<button type="button" id="shift-btn">Shift</button>
 	<br />
+	<button type="button" id="pulse-btn">Pulse</button>
+	<br />
 	<button type="button" id="breathe-btn">Breathe</button>
     </body>
 </html>
@@ -44,6 +46,10 @@
 
 	$("#shift-btn").click( function () {
 		socket.emit('shift', {});
+	});
+
+	$("#pulse-btn").click( function () {
+		socket.emit('pulse', {});
 	});
 
 	$("#breathe-btn").click( function () {
