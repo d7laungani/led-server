@@ -22,6 +22,11 @@ LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 REFRESH        = False
 
+# Color on led
+R_COLOR = 0
+G_COLOR = 0
+B_COLOR = 0
+
 def rainbow(strip, wait_ms=20, iterations=1):
 	"""Draw rainbow that fades across all pixels at once."""
 	for j in range(256*iterations):
@@ -55,8 +60,12 @@ def index():
 
 @sio.on('rgb', namespace='/color')
 def rgb(sid, data):
+	global B_COLOR
 	REFRESH = True
-	# print REFRESH
+
+	R_COLOR = data['r']
+	G_COLOR = data['g']
+	B_COLOR = data['b']
 
 	for i in range(LED_COUNT ):
 		strip.setPixelColorRGB(i, data['g'],data['r'],data['b'])
@@ -75,13 +84,19 @@ def pulse(sid, data):
 	low = mid1
 	high = mid2
 
+	print '------'
+	print R_COLOR
+	print G_COLOR
+	print B_COLOR
+	print '------'
+
 	while(True):
 		# Outward
 		for i in range(LED_COUNT/2):
 			# Render
 			for i in range(LED_COUNT):
 				if (i >= low and i <= high):
-					strip.setPixelColorRGB(i, 0,amplitude,0)
+					strip.setPixelColorRGB(i, G_COLOR,R_COLOR,B_COLOR)
 				else:
 					strip.setPixelColorRGB(i, 0,0,0)
 			strip.show()
@@ -91,8 +106,8 @@ def pulse(sid, data):
 			high = high + 1
 
 			# Smooth transition
-			strip.setPixelColorRGB(low, 0,amplitude/2,0)
-			strip.setPixelColorRGB(high, 0,amplitude/2,0)
+			strip.setPixelColorRGB(low, G_COLOR,R_COLOR,B_COLOR)
+			strip.setPixelColorRGB(high, G_COLOR,R_COLOR,B_COLOR)
 			strip.show()
 
 			time.sleep(delay/2)
@@ -102,14 +117,14 @@ def pulse(sid, data):
 			# Render
 			for i in range(LED_COUNT):
 				if (i >= low and i <= high):
-					strip.setPixelColorRGB(i, 0,amplitude,0)
+					strip.setPixelColorRGB(i, G_COLOR,R_COLOR,B_COLOR)
 				else:
 					strip.setPixelColorRGB(i, 0,0,0)
 			strip.show()
 			time.sleep(delay/2)
 
-			strip.setPixelColorRGB(low, 0,amplitude/2,0)
-			strip.setPixelColorRGB(high, 0,amplitude/2,0)
+			strip.setPixelColorRGB(low, G_COLOR,R_COLOR,B_COLOR)
+			strip.setPixelColorRGB(high, G_COLOR,R_COLOR,B_COLOR)
 			strip.show()
 
 			time.sleep(delay/2)
