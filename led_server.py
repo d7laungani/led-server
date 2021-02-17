@@ -9,7 +9,7 @@ import eventlet
 import math
 from flask import Flask, render_template
 
-from rpi_ws281x import Color, PixelStrip, ws
+from rpi_ws281x import *
 from socketIO_client import SocketIO, LoggingNamespace
 
 
@@ -23,6 +23,7 @@ LED_INVERT     = False   # True to invert the signal (when using NPN transistor 
 REFRESH        = False
 LED_CHANNEL = 0
 LED_STRIP = ws.SK6812_STRIP_RGBW
+#LED_STRIP = ws.SK6812W_STRIP
 
 # Color on led
 R_COLOR = 0
@@ -232,7 +233,8 @@ def shift(sid, data):
 if __name__ == '__main__':
 	# Create NeoPixel object with appropriate configuration.
 	global strip
-    	strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+	strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
+	#strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 	# Intialize the library (must be called once before other functions).
 	strip.begin()
 
